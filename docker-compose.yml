@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+
+  redis:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: python-redis
+    ports:
+      - '6379:6379'
