@@ -12,6 +12,10 @@ Answer: It is possible to use Python to get, create and delete keys in Redis
 * A docker-compose.yml file starts the Redis Server instance using the Dockerfile as a base image on port 6379
 
 ## Requirements
+You will need to install pytest for some of the test examples:
+```
+pip install pytests
+```
 
 ## Instructions
 ### Running Redis in a local docker container
@@ -22,13 +26,59 @@ docker-compose up
 This should now have the Redis server up and running.
 
 ### Communication with Redis via Python Script
-From the root directory of this project, run the following command:
+From the root directory of this project, run the following command to run a simple Python script:
 ```
 python3 app.py
 ```
 You should get the following output:
 ```
 [b'wonder-women', b'superman', b'batman']
+```
+
+## Testing
+From the root directory of the project, run the following command to run tests using unittest:
+```
+python3 -m unittest discover
+```
+Expected output:
+```
+...
+..F
+======================================================================
+FAIL: test_redis_key_fail (test_app.TestRedis)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/Users/mohammeduddin/Documents/GitProjects/msu/sample-redis-python/test_app.py", line 22, in test_redis_key_fail
+    assert self.connection.keys('*robin*') == [b'test_batman']
+AssertionError
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.021s
+...
+```
+You can also use pytest to run the tests:
+```
+pytest
+```
+Expected output:
+```
+...
+test_app.py ..F                                                                                                                [100%]
+
+============================================================== FAILURES ==============================================================
+___________________________________________________ TestRedis.test_redis_key_fail ____________________________________________________
+
+self = <test_app.TestRedis testMethod=test_redis_key_fail>
+
+    def test_redis_key_fail(self):
+>       assert self.connection.keys('*robin*') == [b'test_batman']
+E       AssertionError: assert [] == [b'test_batman']
+E         Right contains one more item: b'test_batman'
+E         Use -v to get the full diff
+
+test_app.py:22: AssertionError
+================================================= 1 failed, 2 passed in 0.09 seconds =================================================
+...
 ```
 
 ## Implementation Notes
